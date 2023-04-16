@@ -1,0 +1,44 @@
+@use '../../utilities/variables' as *;
+
+.header {
+  width: 100%;
+  background-color: $color-white;
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05);
+
+  &-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1216px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 16px 0;
+
+    .user {
+      display: flex;
+      align-items: center;
+
+      span {
+        font-size: 14px;
+        font-weight: $font-weight__medium;
+        color: $color-gray__disabled;
+      }
+
+      img {
+        margin-left: 12px;
+      }
+    }
+  }
+
+  &-logo {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: $screen__m) {
+  .header {
+    &-wrapper {
+      padding: 16px 16px;
+    }
+  }
+}

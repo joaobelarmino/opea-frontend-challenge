@@ -1,0 +1,45 @@
+@use '../../utilities/variables' as *;
+
+.clients-wrapper {
+  margin-top: 12px;
+
+  .client-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid $color-gray;
+    margin-top: 6px;
+    padding: 8px;
+    border-radius: 35px 4px 4px 35px;
+
+    figure {
+      display: flex;
+      border-radius: 100%;
+      border: 1px solid $color-gray__disabled;
+      padding: 10px 12px;
+    }
+
+    .client-info {
+      margin-left: 24px;
+
+      &__name {
+        display: block;
+      }
+    }
+
+    &.add-card {
+      cursor: pointer;
+      
+      span {
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        line-height: 14px;
+        letter-spacing: 1.25px;
+        font-weight: $font-weight__medium;
+        text-align: center;
+        color: $color-gray__disabled;
+      }
+    }
+  }
+}

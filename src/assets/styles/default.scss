@@ -1,0 +1,16 @@
+@use '../../utilities/variables' as *;
+
+*, 
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body{
+    background-color: $background-color;
+    font-size: 100%;
+    font-family: 'Jost', sans-serif;
+}

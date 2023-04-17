@@ -41,9 +41,25 @@ function ClientsGrid() {
     }
   }
 
+  async function editClient(client) {
+    try {
+      await ClientsService.editClient(client);
+      handleActionModal();
+    } catch (error) {
+      throw new Error('Não foi possível editar o cliente');
+    }
+  }
+
   async function removeClient(clientId) {
     await ClientsService.removeClient(clientId);
     handleActionModal();
+  }
+
+  function handleSubmit(client) {
+    if (typeModal.type === 'add') {
+      return createClient(client);
+    }
+    return editClient(client);
   }
 
   useEffect(() => {
@@ -56,7 +72,7 @@ function ClientsGrid() {
         <Modal
           content={(
             <FormClient
-              onSubmit={createClient}
+              onSubmit={handleSubmit}
               typeModal={typeModal}
               closeModal={handleToggleModal}
               onRemove={removeClient}

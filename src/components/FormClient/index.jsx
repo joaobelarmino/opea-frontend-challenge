@@ -20,8 +20,15 @@ function FormClient({
     e.preventDefault();
 
     if (name.length && cnpj.length && email.length) {
+      if (currentClient.id) {
+        onSubmit({
+          id: currentClient.id, name, cnpj, email,
+        });
+      } else {
+        onSubmit({ name, cnpj, email });
+      }
+
       setFormGenericError(false);
-      onSubmit({ name, cnpj, email });
     } else {
       setFormGenericError(true);
     }
@@ -35,6 +42,8 @@ function FormClient({
       setEmail(response.email);
 
       setCurrentClient(response);
+    } else {
+      setCurrentClient([]);
     }
   }
 
@@ -84,7 +93,6 @@ function FormClient({
             onClick={() => onRemove(currentClient.id)}
           >
             <img src={trashIcon} alt="Ícone de lixeira" />
-
           </button>
         </div>
         )}

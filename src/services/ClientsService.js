@@ -17,6 +17,10 @@ class ClientsService {
     return this.httpClient.post('/clients', { body: client });
   }
 
+  async editClient(client) {
+    return this.httpClient.put(`/clients/${client.id}`, { body: client });
+  }
+
   async removeClient(clientId) {
     return this.httpClient.delete(`/clients/${clientId}`);
   }

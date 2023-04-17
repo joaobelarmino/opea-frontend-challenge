@@ -1,0 +1,25 @@
+@use '../../utilities/variables' as *;
+
+.form-group {
+  & + & {
+    margin-top: 16px;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-family: $font-family__secondary;
+      font-size: 12px;
+      line-height: 24px;
+      color: $primary-color;
+    }
+
+    input {
+      padding: 6px 12px;
+      border: 1px solid $color-gray;
+      border-radius: 2px;
+    }
+  }
+}

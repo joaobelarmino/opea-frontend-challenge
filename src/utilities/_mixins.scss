@@ -1,0 +1,23 @@
+@use './variables' as *;
+
+@mixin button {
+  display: flex;
+  justify-content: center;
+  padding: 7px;
+  border-radius: 4px;
+}
+
+@mixin primaryButton {
+  @include button;
+  border: 1px solid $color-gray;
+  background-color: $primary-color;
+  border-color: $primary-color;
+  color: $color-white;
+}
+
+@mixin secondaryButton {
+  @include button;
+  border: 1px solid $color-gray;
+  background-color: transparent;
+  color: $color-gray0;
+}

@@ -9,8 +9,16 @@ class ClientsService {
     return this.httpClient.get('/clients');
   }
 
-  async showClient(client) {
-    return this.httpClient.get(`/clients?text=${client}`);
+  async showClient(clientName) {
+    return this.httpClient.get(`/clients?text=${clientName}`);
+  }
+
+  async registerClient(client) {
+    return this.httpClient.post('/clients', { body: client });
+  }
+
+  async removeClient(clientId) {
+    return this.httpClient.delete(`/clients/${clientId}`);
   }
 }
 

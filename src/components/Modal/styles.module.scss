@@ -1,0 +1,49 @@
+@use '../../utilities/variables' as *;
+@use '../../utilities/mixins' as *;
+
+.modal-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  .modal-container {
+    width: 320px;
+    background-color: $color-white;
+    border-radius: 4px;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+
+      h1 {
+        font-size: 16px;
+        font-weight: $font-weight__regular;
+        line-height: 24px;
+        color:rgba(0, 0, 0, 0.3);
+        letter-spacing: 1px;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+      }
+    }
+
+    &__main-content {
+      margin: 24px;
+    }
+
+    &__footer {
+      
+    }
+  }
+}

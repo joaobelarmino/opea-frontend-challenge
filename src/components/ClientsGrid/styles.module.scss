@@ -11,12 +11,15 @@
     margin-top: 6px;
     padding: 8px;
     border-radius: 35px 4px 4px 35px;
+    background-color: $color-white;
+    text-align: left;
 
     figure {
       display: flex;
       border-radius: 100%;
       border: 1px solid $color-gray__disabled;
-      padding: 10px 12px;
+      padding: 9px 12px;
+      background-color: $background-color;
     }
 
     .client-info {
@@ -28,8 +31,9 @@
     }
 
     &.add-card {
+      background-color: transparent;
       cursor: pointer;
-      
+
       span {
         display: block;
         width: 100%;

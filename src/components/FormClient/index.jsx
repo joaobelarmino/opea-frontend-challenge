@@ -6,6 +6,7 @@ import trashIcon from '../../assets/img/trash-icon.svg';
 
 import styles from './styles.module.scss';
 import ClientsService from '../../services/ClientsService';
+import Loader from '../Loader';
 
 function FormClient({
   typeModal, closeModal, onSubmit, onRemove,
@@ -13,6 +14,7 @@ function FormClient({
   const [name, setName] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [currentClient, setCurrentClient] = useState([]);
   const [formGenericError, setFormGenericError] = useState(false);
 
@@ -36,12 +38,17 @@ function FormClient({
 
   async function getClientData() {
     if (typeModal.type === 'edit') {
-      const [response] = await ClientsService.showClient(typeModal.clientName);
-      setName(response.name);
-      setCnpj(response.cnpj);
-      setEmail(response.email);
+      try {
+        setIsLoading(true);
+        const [response] = await ClientsService.showClient(typeModal.clientName);
+        setName(response.name);
+        setCnpj(response.cnpj);
+        setEmail(response.email);
 
-      setCurrentClient(response);
+        setCurrentClient(response);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
       setCurrentClient([]);
     }
@@ -53,6 +60,7 @@ function FormClient({
 
   return (
     <form onSubmit={handleSubmit}>
+      <Loader isLoading={isLoading} isFullPage={false} spinnerSize={90} />
       <FormGroup>
         <label htmlFor="client-name">Nome</label>
         <input

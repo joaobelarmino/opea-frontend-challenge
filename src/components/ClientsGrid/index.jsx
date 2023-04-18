@@ -1,58 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import ClientsService from '../../services/ClientsService';
+import React, { useEffect, useMemo, useState } from 'react';
+import useClients from '../../hooks/useClients';
 
 import Modal from '../Modal';
 import FormClient from '../FormClient';
+import SearchField from '../SearchField';
+import ErrorContainer from '../ErrorContainer';
+import Loader from '../Loader';
 
 import clipboardDisabledIcon from '../../assets/img/clipboard-list-disabled.svg';
+import searchTermNotFound from '../../assets/img/searchTermNotFound.svg';
+import errorIllustration from '../../assets/img/error-listing-data.svg';
 import clipboardIcon from '../../assets/img/clipboard-list.svg';
 import styles from './styles.module.scss';
 
 function ClientsGrid() {
-  const [clientsList, setClientsList] = useState([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [typeModal, setTypeModal] = useState('');
+  const [search, setSearch] = useState('');
 
-  function handleToggleModal() {
-    setIsOpenModal((prevState) => !prevState);
-  }
+  const {
+    loadClients,
+    createClient,
+    editClient,
+    removeClient,
+    handleToggleModal,
+    clientsList,
+    isLoading,
+    hasError,
+    isVisibleModal,
+  } = useClients();
+
+  let filteredClientsList = clientsList;
+
+  filteredClientsList = useMemo(() => clientsList.filter((client) => (
+    client.name.toLowerCase().includes(search.toLowerCase())
+  )), [search, clientsList]);
 
   function handleTypeModal(type) {
     setTypeModal(type);
     handleToggleModal();
-  }
-
-  async function loadCompanies() {
-    const clients = await ClientsService.listClients();
-    setClientsList(clients);
-  }
-
-  function handleActionModal() {
-    loadCompanies();
-    handleToggleModal();
-  }
-
-  async function createClient(client) {
-    try {
-      await ClientsService.registerClient(client);
-      handleActionModal();
-    } catch {
-      throw new Error('Não foi possível cadastrar o cliente');
-    }
-  }
-
-  async function editClient(client) {
-    try {
-      await ClientsService.editClient(client);
-      handleActionModal();
-    } catch (error) {
-      throw new Error('Não foi possível editar o cliente');
-    }
-  }
-
-  async function removeClient(clientId) {
-    await ClientsService.removeClient(clientId);
-    handleActionModal();
   }
 
   function handleSubmit(client) {
@@ -63,12 +48,13 @@ function ClientsGrid() {
   }
 
   useEffect(() => {
-    loadCompanies();
+    loadClients();
   }, []);
 
   return (
     <>
-      {isOpenModal && (
+      <Loader isLoading={isLoading} isFullPage />
+      {isVisibleModal && (
         <Modal
           content={(
             <FormClient
@@ -82,36 +68,54 @@ function ClientsGrid() {
           typeModal={typeModal}
         />
       )}
-      <div className={styles['clients-wrapper']}>
-        <button
-          type="button"
-          onClick={() => handleTypeModal({ type: 'add' })}
-          className={`${styles['add-card']} ${styles['client-card']}`}
-        >
-          <figure>
-            <img src={clipboardDisabledIcon} alt="Ícone de prancheta" />
-          </figure>
-          <span>Adicionar empresa</span>
-        </button>
-
-        {clientsList.map((client) => (
-          <button
-            type="button"
-            className={styles['client-card']}
-            key={client.id}
-            onClick={() => handleTypeModal({ type: 'edit', clientName: client.name })}
-          >
-            <figure>
-              <img src={clipboardIcon} alt="Ícone de prancheta" />
-            </figure>
-            <div className={styles['client-info']}>
-              <span className={styles['client-info__name']}>{client.name}</span>
-              <span>{`CNPJ: ${client.cnpj}`}</span>
-              <span>{` - Email: ${client.email}`}</span>
-            </div>
-          </button>
-        ))}
-      </div>
+      {hasError && (
+        <ErrorContainer
+          img={errorIllustration}
+          alt="Ilustração de erro no carregamento da lista de clientes"
+          text="Não foi possível carregar a lista de empresas, atualize a página e tente novamente."
+        />
+      )}
+      {!hasError && (
+        <>
+          <SearchField search={search} onChange={setSearch} />
+          <div className={styles['clients-wrapper']}>
+            <button
+              type="button"
+              onClick={() => handleTypeModal({ type: 'add' })}
+              className={`${styles['add-card']} ${styles['client-card']}`}
+            >
+              <figure>
+                <img src={clipboardDisabledIcon} alt="Ícone de prancheta" />
+              </figure>
+              <span>Adicionar empresa</span>
+            </button>
+            {(filteredClientsList.length === 0 && !isLoading) && (
+              <ErrorContainer
+                img={searchTermNotFound}
+                alt="Ilustração de registro não encontrado"
+                text={`Não encontramos registros com a informação "${search}".`}
+              />
+            )}
+            {filteredClientsList.map((client) => (
+              <button
+                type="button"
+                className={styles['client-card']}
+                key={client.id}
+                onClick={() => handleTypeModal({ type: 'edit', clientName: client.name })}
+              >
+                <figure>
+                  <img src={clipboardIcon} alt="Ícone de prancheta" />
+                </figure>
+                <div className={styles['client-info']}>
+                  <span className={styles['client-info__name']}>{client.name}</span>
+                  <span>{`CNPJ: ${client.cnpj}`}</span>
+                  <span>{` - Email: ${client.email}`}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -10,6 +10,9 @@
     font-family: $font-family__primary;
 }
 
+html, body, #root {
+    height: 100%;
+}
 body{
     background-color: $background-color;
     font-size: 100%;

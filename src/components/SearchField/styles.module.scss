@@ -1,0 +1,39 @@
+@use '../../utilities/variables' as *;
+
+.search-field {
+  display: flex;
+  justify-content: flex-end;
+
+  .form-controll {
+    display: flex;
+    align-items: center;
+    max-width: 280px;
+    background-color: $color-white;
+    border-radius: 4px;
+    border: 1px solid $color-gray;
+  
+    input {
+      color: $color-gray__darker;
+      font-size: 14px;
+      line-height: 16px;
+      flex: 1;
+      background-color: transparent;
+      padding: 6px 6px 6px 14px;
+      border: none;
+      outline: none;
+    }
+  
+    button {
+      background-color: transparent;
+      border: none;
+      outline: none;
+      padding: 6px 6px 6px 0;
+      display: flex;
+  
+      img {
+        width: 16px;
+        height: 16px;      
+      }
+    }
+  }
+}

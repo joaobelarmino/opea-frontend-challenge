@@ -1,7 +1,10 @@
 @use '../../utilities/variables' as *;
 
 .clients-wrapper {
+  position: relative;
   margin-top: 12px;
+  height: 100%;
+  max-height: 700px;
 
   .client-card {
     width: 100%;

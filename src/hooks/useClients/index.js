@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import ClientsService from '../../services/ClientsService';
 
@@ -24,8 +25,9 @@ export default function useClients() {
     try {
       const newClient = await ClientsService.registerClient(client);
       setClientsList((prevState) => [...prevState, newClient]);
+      toast.success('Cliente cadastrado com sucesso!');
     } catch {
-      throw new Error('Não foi possível cadastrar o cliente');
+      toast.error('Não foi possível cadastrar o cliente, por favor, tente novamente mais tarde.');
     }
   }
 
@@ -40,8 +42,12 @@ export default function useClients() {
       });
 
       setClientsList(updatedList);
+      toast.success('Cliente editado com sucesso!');
     } catch {
-      throw new Error('Não foi possível editar o cliente');
+      toast.error(
+        `Parece que não foi possível atualizar as informações do cliente,
+        tente novamente mais tarde.`,
+      );
     }
   }
 
@@ -50,8 +56,9 @@ export default function useClients() {
       await ClientsService.removeClient(clientId);
       const updatedList = clientsList.filter((clientItem) => clientItem.id !== clientId);
       setClientsList(updatedList);
+      toast.info('Cliente removido com sucesso!');
     } catch {
-      throw new Error('Não foi possível excluir o cliente');
+      toast.error('Não foi possível excluir o cliente, tente novamente mais tarde.');
     }
   }
 

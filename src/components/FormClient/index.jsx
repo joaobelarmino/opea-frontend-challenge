@@ -18,10 +18,16 @@ function FormClient({
   const [currentClient, setCurrentClient] = useState([]);
   const [formGenericError, setFormGenericError] = useState(false);
 
+  function handleRemove(clientId) {
+    closeModal();
+    onRemove(clientId);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
     if (name.length && cnpj.length && email.length) {
+      closeModal();
       if (currentClient.id) {
         onSubmit({
           id: currentClient.id, name, cnpj, email,
@@ -40,7 +46,14 @@ function FormClient({
     if (typeModal.type === 'edit') {
       try {
         setIsLoading(true);
-        const [response] = await ClientsService.showClient(typeModal.clientName);
+        let response = await ClientsService.showClient(typeModal.clientName);
+
+        /**
+         * This line is responsible for get the correct current client, because the api looks like
+         * use the method `.includes` that may return more than one item in some cases.
+         */
+        [response] = response.filter((client) => client.name === typeModal.clientName);
+
         setName(response.name);
         setCnpj(response.cnpj);
         setEmail(response.email);
@@ -98,7 +111,7 @@ function FormClient({
         <div className={styles['remove-action']}>
           <button
             type="button"
-            onClick={() => onRemove(currentClient.id)}
+            onClick={() => handleRemove(currentClient.id)}
           >
             <img src={trashIcon} alt="Ícone de lixeira" />
           </button>

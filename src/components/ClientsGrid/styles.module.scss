@@ -25,11 +25,17 @@
       background-color: $background-color;
     }
 
-    .client-info {
+    &__info {
       margin-left: 24px;
 
       &__name {
         display: block;
+      }
+
+      span:last-of-type {
+        &::before {
+          content: ' - ';
+        }
       }
     }
 
@@ -46,6 +52,23 @@
         font-weight: $font-weight__medium;
         text-align: center;
         color: $color-gray__disabled;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen__sm) {
+  .clients-wrapper {
+    .client-card {
+      &__info {
+        display: flex;
+        flex-direction: column;
+
+        span:last-of-type {
+          &::before {
+            content: none;
+          }
+        }
       }
     }
   }

@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 
 function SearchField({ search, onChange: setSearch }) {
   return (
-    <form className={styles['search-field']}>
+    <div className={styles['search-field']}>
       <div className={styles['form-controll']}>
         <input
           type="text"
@@ -14,9 +14,9 @@ function SearchField({ search, onChange: setSearch }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button type="button" disabled><img src={searchIconGlass} alt="Ícone de busca" /></button>
+        <button type="button" disabled tabIndex={-1}><img src={searchIconGlass} alt="Ícone de busca" /></button>
       </div>
-    </form>
+    </div>
   );
 }
 

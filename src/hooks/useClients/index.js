@@ -6,11 +6,6 @@ export default function useClients() {
   const [clientsList, setClientsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [isVisibleModal, setIsVisibleModal] = useState(false);
-
-  function handleToggleModal() {
-    setIsVisibleModal((prevState) => !prevState);
-  }
 
   async function loadClients() {
     try {
@@ -25,15 +20,10 @@ export default function useClients() {
     }
   }
 
-  function handleActionModal() {
-    loadClients();
-    handleToggleModal();
-  }
-
   async function createClient(client) {
     try {
-      await ClientsService.registerClient(client);
-      handleActionModal();
+      const newClient = await ClientsService.registerClient(client);
+      setClientsList((prevState) => [...prevState, newClient]);
     } catch {
       throw new Error('Não foi possível cadastrar o cliente');
     }
@@ -41,8 +31,15 @@ export default function useClients() {
 
   async function editClient(client) {
     try {
-      await ClientsService.editClient(client);
-      handleActionModal();
+      const response = await ClientsService.editClient(client);
+      const updatedList = clientsList.map((clientItem) => {
+        if (clientItem.id === response.id) {
+          return response;
+        }
+        return clientItem;
+      });
+
+      setClientsList(updatedList);
     } catch {
       throw new Error('Não foi possível editar o cliente');
     }
@@ -51,7 +48,8 @@ export default function useClients() {
   async function removeClient(clientId) {
     try {
       await ClientsService.removeClient(clientId);
-      handleActionModal();
+      const updatedList = clientsList.filter((clientItem) => clientItem.id !== clientId);
+      setClientsList(updatedList);
     } catch {
       throw new Error('Não foi possível excluir o cliente');
     }
@@ -65,7 +63,5 @@ export default function useClients() {
     clientsList,
     isLoading,
     hasError,
-    handleToggleModal,
-    isVisibleModal,
   };
 }

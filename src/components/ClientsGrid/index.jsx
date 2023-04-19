@@ -8,32 +8,34 @@ import ErrorContainer from '../ErrorContainer';
 import Loader from '../Loader';
 
 import clipboardDisabledIcon from '../../assets/img/clipboard-list-disabled.svg';
-import searchTermNotFound from '../../assets/img/searchTermNotFound.svg';
+import searchTermNotFound from '../../assets/img/search-term-not-found.svg';
 import errorIllustration from '../../assets/img/error-listing-data.svg';
 import clipboardIcon from '../../assets/img/clipboard-list.svg';
+import noData from '../../assets/img/no-data-return.svg';
 import styles from './styles.module.scss';
 
 function ClientsGrid() {
   const [typeModal, setTypeModal] = useState('');
   const [search, setSearch] = useState('');
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
 
   const {
     loadClients,
     createClient,
     editClient,
     removeClient,
-    handleToggleModal,
     clientsList,
     isLoading,
     hasError,
-    isVisibleModal,
   } = useClients();
 
-  let filteredClientsList = clientsList;
-
-  filteredClientsList = useMemo(() => clientsList.filter((client) => (
+  const filteredClientsList = useMemo(() => clientsList.filter((client) => (
     client.name.toLowerCase().includes(search.toLowerCase())
   )), [search, clientsList]);
+
+  function handleToggleModal() {
+    setIsVisibleModal((prevState) => !prevState);
+  }
 
   function handleTypeModal(type) {
     setTypeModal(type);
@@ -89,11 +91,19 @@ function ClientsGrid() {
               </figure>
               <span>Adicionar empresa</span>
             </button>
-            {(filteredClientsList.length === 0 && !isLoading) && (
+            {(filteredClientsList.length === 0 && !isLoading && clientsList.length > 0) && (
               <ErrorContainer
                 img={searchTermNotFound}
                 alt="Ilustração de registro não encontrado"
                 text={`Não encontramos registros com a informação "${search}".`}
+              />
+            )}
+            {(clientsList.length === 0 && !isLoading) && (
+              <ErrorContainer
+                img={noData}
+                alt="Ilustração de nenhum cliente cadastrado"
+                text={`Não existe nenhum registro cadastrado, clique no botão 
+                "Adicionar empresa" acima e cadastre o primeiro.`}
               />
             )}
             {filteredClientsList.map((client) => (
@@ -106,10 +116,10 @@ function ClientsGrid() {
                 <figure>
                   <img src={clipboardIcon} alt="Ícone de prancheta" />
                 </figure>
-                <div className={styles['client-info']}>
-                  <span className={styles['client-info__name']}>{client.name}</span>
+                <div className={styles['client-card__info']}>
+                  <span className={styles['client-card__info__name']}>{client.name}</span>
                   <span>{`CNPJ: ${client.cnpj}`}</span>
-                  <span>{` - Email: ${client.email}`}</span>
+                  <span>{`Email: ${client.email}`}</span>
                 </div>
               </button>
             ))}

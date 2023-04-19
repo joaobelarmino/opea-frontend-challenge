@@ -116,21 +116,6 @@ function ClientsGrid() {
                 <span>{`CNPJ: ${client.cnpj}`}</span>
                 <span>{`Email: ${client.email}`}</span>
               </ClientCard>
-              // <button
-              //   type="button"
-              //   className={styles['client-card']}
-              //   key={client.id}
-              //   onClick={() => handleTypeModal({ type: 'edit', clientName: client.name })}
-              // >
-              //   <figure>
-              //     <img src={clipboardIcon} alt="Ícone de prancheta" />
-              //   </figure>
-              //   <div className={styles['client-card__info']}>
-              //     <span className={styles['client-card__info__name']}>{client.name}</span>
-              //     <span>{`CNPJ: ${client.cnpj}`}</span>
-              //     <span>{`Email: ${client.email}`}</span>
-              //   </div>
-              // </button>
             ))}
           </div>
         </>

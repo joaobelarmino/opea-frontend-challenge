@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import useClients from '../../hooks/useClients';
+import useCrud from '../../hooks/useCrud';
 
 import Modal from '../Modal';
 import FormClient from '../FormClient';
 import SearchField from '../SearchField';
+import ClientCard from '../ClientCard';
 import ErrorContainer from '../ErrorContainer';
 import Loader from '../Loader';
 
@@ -27,7 +28,7 @@ function ClientsGrid() {
     clientsList,
     isLoading,
     hasError,
-  } = useClients();
+  } = useCrud();
 
   const filteredClientsList = useMemo(() => clientsList.filter((client) => (
     client.name.toLowerCase().includes(search.toLowerCase())
@@ -81,16 +82,13 @@ function ClientsGrid() {
         <>
           <SearchField search={search} onChange={setSearch} />
           <div className={styles['clients-wrapper']}>
-            <button
-              type="button"
+            <ClientCard
+              type="add"
               onClick={() => handleTypeModal({ type: 'add' })}
-              className={`${styles['add-card']} ${styles['client-card']}`}
+              img={clipboardDisabledIcon}
             >
-              <figure>
-                <img src={clipboardDisabledIcon} alt="Ícone de prancheta" />
-              </figure>
               <span>Adicionar empresa</span>
-            </button>
+            </ClientCard>
             {(filteredClientsList.length === 0 && !isLoading && clientsList.length > 0) && (
               <ErrorContainer
                 img={searchTermNotFound}
@@ -107,21 +105,32 @@ function ClientsGrid() {
               />
             )}
             {filteredClientsList.map((client) => (
-              <button
-                type="button"
-                className={styles['client-card']}
-                key={client.id}
+              <ClientCard
                 onClick={() => handleTypeModal({ type: 'edit', clientName: client.name })}
+                client={client}
+                img={clipboardIcon}
+                type="edit"
+                key={client.id}
               >
-                <figure>
-                  <img src={clipboardIcon} alt="Ícone de prancheta" />
-                </figure>
-                <div className={styles['client-card__info']}>
-                  <span className={styles['client-card__info__name']}>{client.name}</span>
-                  <span>{`CNPJ: ${client.cnpj}`}</span>
-                  <span>{`Email: ${client.email}`}</span>
-                </div>
-              </button>
+                <span>{client.name}</span>
+                <span>{`CNPJ: ${client.cnpj}`}</span>
+                <span>{`Email: ${client.email}`}</span>
+              </ClientCard>
+              // <button
+              //   type="button"
+              //   className={styles['client-card']}
+              //   key={client.id}
+              //   onClick={() => handleTypeModal({ type: 'edit', clientName: client.name })}
+              // >
+              //   <figure>
+              //     <img src={clipboardIcon} alt="Ícone de prancheta" />
+              //   </figure>
+              //   <div className={styles['client-card__info']}>
+              //     <span className={styles['client-card__info__name']}>{client.name}</span>
+              //     <span>{`CNPJ: ${client.cnpj}`}</span>
+              //     <span>{`Email: ${client.email}`}</span>
+              //   </div>
+              // </button>
             ))}
           </div>
         </>

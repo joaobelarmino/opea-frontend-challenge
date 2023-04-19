@@ -1,0 +1,72 @@
+@use '../../utilities/variables' as *;
+
+.client-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 1px solid $color-gray;
+  margin-top: 6px;
+  padding: 8px;
+  border-radius: 35px 4px 4px 35px;
+  background-color: $color-white;
+  text-align: left;
+
+  figure {
+    display: flex;
+    border-radius: 100%;
+    border: 1px solid $color-gray__disabled;
+    padding: 9px 12px;
+    background-color: $background-color;
+  }
+
+  &__info {
+    width: 100%;
+    margin-left: 24px;
+
+    span {
+      &:first-of-type {
+        display: block;
+      }
+      &:last-of-type {
+        &::before {
+          content: ' - ';
+        }
+      }
+    }
+  }
+
+  &.add-card {
+    background-color: transparent;
+    cursor: pointer;
+
+    span {
+      display: block;
+      width: 100%;
+      font-size: 14px;
+      line-height: 14px;
+      letter-spacing: 1.25px;
+      font-weight: $font-weight__medium;
+      text-align: center;
+      color: $color-gray__disabled;
+
+      &::before {
+        content: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $screen__sm) {
+  .client-card {
+    &__info {
+      display: flex;
+      flex-direction: column;
+
+      span:last-of-type {
+        &::before {
+          content: none;
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import ClientsService from '../../services/ClientsService';
 
-export default function useClients() {
+export default function useCrud() {
   const [clientsList, setClientsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
